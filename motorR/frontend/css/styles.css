@@ -1,0 +1,140 @@
+/* GARDEN THEME STYLES */
+
+:root {
+    --garden-bg: #fdfdf9; /* Soft off-white */
+    --garden-panel: #ffffff;
+    --garden-text: #2f3e2e; /* Deep green-gray */
+    --garden-muted: #6b7d6a;
+    --garden-green: #388e3c; /* Primary green */
+    --garden-green-light: #e8f5e9;
+    --garden-green-hover: #2e7d32;
+    --garden-accent: #fbc02d; /* Soft yellow accent */
+    --garden-border: #e0e0d8;
+}
+
+body {
+    background-color: var(--garden-bg) !important;
+    font-family: 'Nunito', sans-serif;
+    color: var(--garden-text);
+}
+
+h1, h2, h3, h4, h5, h6, .brand-logo {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    color: var(--garden-text);
+}
+
+/* Navbar */
+.garden-navbar {
+    background-color: rgba(253, 253, 249, 0.9) !important;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--garden-border) !important;
+}
+
+.brand-logo {
+    color: var(--garden-green) !important;
+    text-decoration: none;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.brand-logo svg {
+    fill: var(--garden-green);
+}
+
+/* Base Buttons */
+.btn-garden {
+    background-color: var(--garden-green) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 20px !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(56, 142, 60, 0.2);
+}
+.btn-garden:hover {
+    background-color: var(--garden-green-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px rgba(56, 142, 60, 0.3);
+}
+
+.btn-garden-outline {
+    background-color: white !important;
+    color: var(--garden-green) !important;
+    border: 1px solid var(--garden-green) !important;
+    border-radius: 20px !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.btn-garden-outline:hover {
+    background-color: var(--garden-green-light) !important;
+}
+
+/* Cards & Containers */
+.garden-card {
+    background-color: var(--garden-panel) !important;
+    border: 1px solid var(--garden-border) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.garden-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(47, 62, 46, 0.08) !important;
+}
+
+.card-img-garden {
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--garden-border);
+    transition: transform 0.5s ease;
+}
+.garden-card:hover .card-img-garden {
+    transform: scale(1.05);
+}
+
+/* Inputs */
+.garden-input {
+    background-color: var(--garden-panel) !important;
+    border: 1px solid var(--garden-border) !important;
+    color: var(--garden-text) !important;
+    border-radius: 20px !important;
+    padding: 0.5rem 1rem !important;
+}
+.garden-input:focus {
+    border-color: var(--garden-green) !important;
+    box-shadow: 0 0 0 3px var(--garden-green-light) !important;
+}
+
+/* Utilities */
+.text-garden {
+    color: var(--garden-green) !important;
+}
+
+.garden-offcanvas {
+    background-color: var(--garden-bg) !important;
+    border-left: 1px solid var(--garden-border) !important;
+}
+
+.cart-item-garden {
+    border-bottom: 1px solid var(--garden-border);
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+.cart-item-garden:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Badges */
+.badge-garden {
+    background-color: var(--garden-green-light) !important;
+    color: var(--garden-green-hover) !important;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}

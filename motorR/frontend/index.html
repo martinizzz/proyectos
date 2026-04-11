@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jardinería & Vivero</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top garden-navbar">
+        <div class="container">
+            <a href="#" class="brand-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C7.58 2 4 5.58 4 10c0 3.53 1.96 6.58 4.9 8.16L8 22h8l-1.09-3.83C17.9 16.63 19.98 13.56 20 10c0-4.42-3.58-8-8-8zm-1 6h2v5h-2V8z"/></svg> 
+                EcoVivero
+            </a>
+            <div class="d-flex gap-2 align-items-center">
+                <a href="./admin.html" class="btn btn-garden-outline">Admin</a>
+                <button class="btn btn-garden position-relative" 
+                        data-bs-toggle="offcanvas" 
+                        data-bs-target="#cartOffcanvas">
+                    Bolsa
+                    <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.75rem;">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <div class="row g-3 align-items-end mb-4">
+            <div class="col-12 col-md-6">
+                <h1 class="h2 mb-1 text-garden">Catálogo Botánico</h1>
+                <p class="text-muted mb-0" style="font-size: 1rem;">Plantas, árboles, flores y todo para tu jardín</p>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="d-flex gap-2 justify-content-md-end">
+                    <input type="text" placeholder="Buscar especies..." class="form-control garden-input" id="searchInput">
+                    <select id="sortSelect" class="form-select garden-input" style="max-width: 220px;">
+                        <option value="name_asc">Nombre (A-Z)</option>
+                        <option value="price_asc">Precio (Menor a Mayor)</option>
+                        <option value="price_desc">Precio (Mayor a Menor)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="topRecommendationsSection" class="mb-5 d-none">
+            <div class="d-flex align-items-center mb-3">
+                <span class="fs-4 me-2">🌿</span>
+                <h2 class="h5 mb-0 text-garden">Especies sugeridas para tu jardín</h2>
+            </div>
+            <div id="topRecommendationsGrid" class="row g-3"></div>
+        </div>
+
+        <div id="productsGrid" class="row g-3"></div>
+
+        <div id="recommendationsSection" class="mt-5 d-none pb-4">
+            <h2 class="h4 mb-3 border-bottom pb-2">Recomendados para ti (MotorR)</h2>
+            <div id="recommendationsGrid" class="row g-3"></div>
+        </div>
+
+        <div id="emptyState" class="text-center py-5 d-none">
+            <div class="fs-4 text-muted">Aún no hay naturaleza sembrada aquí</div>
+            <p class="text-muted mt-2">No encontramos especies con ese nombre</p>
+        </div>
+    </main>
+
+    <div class="offcanvas offcanvas-end garden-offcanvas" tabindex="-1" id="cartOffcanvas">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title text-garden">Tu Bolsa de Jardinería</h5>
+            <button type="button" data-bs-dismiss="offcanvas" class="btn-close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="cartItems" class="d-flex flex-column mb-3"></div>
+            <div id="cartRecommendations" class="mb-3 d-none p-3 rounded" style="background-color: var(--garden-green-light); border: 1px solid var(--garden-border);">
+                <h6 class="text-garden fw-bold small mb-3">Fertilizantes y macetas ideales:</h6>
+                <div id="recommendationsList" class="d-flex flex-wrap gap-2 justify-content-start"></div>
+            </div>
+            <div id="cartEmpty" class="text-center text-muted py-4 d-none">
+                Tu bolsa está vacía
+            </div>
+            <div class="mt-auto pt-3 border-top">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="fw-semibold">Subtotal</span>
+                    <span id="cartTotal" class="fw-bold fs-5 text-garden">$0</span>
+                </div>
+                <button id="checkoutBtn" class="btn btn-garden w-100 mb-2 py-2">Comprar Seleccionados</button>
+                <button id="clearCartBtn" class="btn btn-garden-outline w-100 py-2">Vaciar Bolsa</button>                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/app.js"></script>
+</body>
+</html>

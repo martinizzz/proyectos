@@ -1,0 +1,9 @@
+.card-product-img{
+    height: 170px;
+    object-fit: cover;
+}
+
+.price{
+    font-variant-numeric: 
+    tabular-nums;
+}
