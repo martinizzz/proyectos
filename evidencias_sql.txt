@@ -1,0 +1,23 @@
+\n--- Total de clientes registrados ---
+total_clientes
+--------------
+10            
+--- Productos con sus categorías ---
+Producto              precio  Categoria          
+--------------------  ------  -------------------
+Ficus Lyrata          45.5    Plantas de Interior
+Limonero 1m           60      Árboles Frutales   
+Aloe Vera             15      Suculentas y Cactus
+Tierra Preparada 5kg  8       Macetas y Sustratos
+Abono Orgánico        12      Fertilizantes      
+--- Ordenes y sus montos por cliente ---
+id_orden  Cliente       total  estado    
+--------  ------------  -----  ----------
+1         Juan Perez    106.5  Completada
+4         Ana Martinez  55     Completada
+8         Elena Torres  15     Completada
+--- Detalle de la Orden 1 ---
+id_orden  Producto              cantidad  precio_unitario  subtotal
+--------  --------------------  --------  ---------------  --------
+1         Ficus Lyrata          1         45.5             45.5    
+1         Tierra Preparada 5kg  1         8                8       
