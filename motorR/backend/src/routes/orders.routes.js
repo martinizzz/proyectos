@@ -1,44 +1,55 @@
 import { Router } from "express";
-import { db } from "../services/firebase.js";
+import { getDb } from "../services/sqlite.js";
 
 const orderRoutes = Router();
 
-// Obtener todas las órdenes (GET /api/orders)
+// Obtener todas las órdenes (GET /api/orders) formato ML
 orderRoutes.get('/', async (req, res) => {
     try {
-        const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').get();
-        const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const db = await getDb();
+        
+        const ordenesRows = await db.all('SELECT * FROM ordenes ORDER BY fecha_orden DESC');
+        const orders = [];
+        
+        for (let row of ordenesRows) {
+            const itemsRows = await db.all(`
+                SELECT p.nombre as name, d.cantidad as quantity, d.precio_unitario as price
+                FROM detalles_orden d
+                JOIN productos p ON d.id_producto = p.id_producto
+                WHERE d.id_orden = ?
+            `, [row.id_orden]);
+            
+            orders.push({
+                id: row.id_orden.toString(),
+                id_cliente: row.id_cliente,
+                total: row.total,
+                estado: row.estado,
+                createdAt: row.fecha_orden,
+                items: itemsRows // Compatible con Python ML [{name: "Producto"}]
+            });
+        }
+        
         return res.json({ ok: true, orders });
     } catch (error) {
         return res.status(500).json({ ok: false, message: 'Error al obtener órdenes', error: error.message });
     }
 });
 
-// Obtener una orden específica (GET /api/orders/:id)
 orderRoutes.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const doc = await db.collection('orders').doc(id).get();
+        const db = await getDb();
+        const doc = await db.get('SELECT * FROM ordenes WHERE id_orden = ?', [id]);
         
-        if (!doc.exists) {
-            return res.status(404).json({ ok: false, message: 'Orden no encontrada' });
-        }
-        
-        return res.json({ ok: true, order: { id: doc.id, ...doc.data() } });
+        if (!doc) return res.status(404).json({ ok: false, message: 'Orden no encontrada' });
+        return res.json({ ok: true, order: { id: doc.id_orden, ...doc } });
     } catch (error) {
         return res.status(500).json({ ok: false, message: 'Error consultando la orden', error: error.message });
     }
 });
 
-// Eliminar una orden (DELETE /api/orders/:id)
 orderRoutes.delete('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        await db.collection('orders').doc(id).delete();
-        return res.json({ ok: true, message: 'Orden eliminada con éxito' });
-    } catch (error) {
-        return res.status(500).json({ ok: false, message: 'Error al eliminar la orden', error: error.message });
-    }
+    return res.json({ ok: false, message: 'Eliminación deshabilitada en modo Vivero ML' });
 });
 
 export default orderRoutes;

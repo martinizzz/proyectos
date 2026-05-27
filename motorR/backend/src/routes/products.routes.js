@@ -1,70 +1,38 @@
 import { Router } from "express";
-import { db } from "../services/firebase.js";
+import { getDb } from "../services/sqlite.js";
 
 const productRoutes = Router();
 
 // Obtener todos los productos (GET /api/products)
 productRoutes.get('/', async (req, res) => {
     try {
-        const snapshot = await db.collection('products').get();
-        const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const db = await getDb();
+        const productsRows = await db.all(`
+            SELECT p.id_producto as id, p.nombre as name, p.precio as price, 
+                   p.stock, c.nombre as category
+            FROM productos p
+            LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        `);
+        
+        const products = productsRows.map(row => ({
+            id: row.id.toString(),
+            name: row.name,
+            price: row.price,
+            stock: row.stock,
+            category: row.category,
+            imageUrl: '', 
+            active: true
+        }));
+        
         return res.json({ ok: true, products });
     } catch (error) {
         return res.status(500).json({ ok: false, message: 'Error al obtener productos', error: error.message });
     }
 });
 
-// Crear un nuevo producto (POST /api/products)
-productRoutes.post('/', async (req, res) => {
-    try {
-        const { name, price, stock, imageUrl, active } = req.body;
-        
-        if (!name || price === undefined) {
-            return res.status(400).json({ ok: false, message: 'El nombre y precio son requeridos' });
-        }
-
-        const newProduct = {
-            name: String(name),
-            price: Number(price),
-            stock: Number(stock || 0),
-            imageUrl: imageUrl ? String(imageUrl) : '',
-            active: active !== undefined ? Boolean(active) : true,
-            createdAt: new Date()
-        };
-        
-        const docRef = await db.collection('products').add(newProduct);
-        return res.status(201).json({ ok: true, id: docRef.id, product: newProduct });
-    } catch (error) {
-        return res.status(500).json({ ok: false, message: 'Error al crear el producto', error: error.message });
-    }
-});
-
-// Actualizar un producto (PUT /api/products/:id)
-productRoutes.put('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const updates = req.body;
-        
-        await db.collection('products').doc(id).update({
-            ...updates,
-            updatedAt: new Date()
-        });
-        
-        return res.json({ ok: true, message: 'Producto actualizado con éxito' });
-    } catch (error) {
-        return res.status(500).json({ ok: false, message: 'Error al actualizar producto', error: error.message });
-    }
-});
-
-// Eliminar un producto (DELETE /api/products/:id)
-productRoutes.delete('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        await db.collection('products').doc(id).delete();
-        return res.json({ ok: true, message: 'Producto eliminado' });
-    } catch (error) {
-        return res.status(500).json({ ok: false, message: 'Error al eliminar producto', error: error.message });
-    }
-});
+// Rutas de mutación deshabilitadas en esta integración (Solo analítica ML)
+productRoutes.post('/', async (req, res) => res.json({ok: false, message: 'Modo solo lectura ML (Vivero)'}));
+productRoutes.put('/:id', async (req, res) => res.json({ok: false, message: 'Modo solo lectura ML (Vivero)'}));
+productRoutes.delete('/:id', async (req, res) => res.json({ok: false, message: 'Modo solo lectura ML (Vivero)'}));
 
 export default productRoutes;
