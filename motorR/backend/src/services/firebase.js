@@ -1,6 +1,11 @@
 import {initializeApp, cert, getApps} from 'firebase-admin/app';
 import {getFirestore} from 'firebase-admin/firestore';
-import "dotenv/config";
+import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 function getServiceAccount(){
     const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
